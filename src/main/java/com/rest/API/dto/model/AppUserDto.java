@@ -2,6 +2,7 @@ package com.rest.API.dto.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.rest.API.model.AppUserRoleEnum;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,11 +11,17 @@ import lombok.experimental.Accessors;
 
 import java.util.Set;
 
-public class UserDto {
+public class AppUserDto {
     private String username;
     private String password;
+    private AppUserRoleEnum role;
 
-    public UserDto(){}
+    public AppUserDto(){}
+
+    public AppUserDto(String username, String password, AppUserRoleEnum role) {
+        this.username = username;
+        this.password = password;
+    }
 
     public String getUsername() {
         return username;
@@ -32,17 +39,12 @@ public class UserDto {
         this.password = password;
     }
 
-    public UserDto(String username, String password) {
-        this.username = username;
-        this.password = password;
+    public AppUserRoleEnum getRole() {
+        return role;
     }
-    /*private String firstName;
-    private String lastName;
-    private String mobileNumber;
-    private boolean isAdmin;
-    private Set<RoleDto> roles;
 
-    public String getFullName() {
-        return firstName != null ? firstName.concat(" ").concat(lastName) : "";
-    }*/
+    public void setRole(AppUserRoleEnum role) {
+        this.role = role;
+    }
+
 }

@@ -1,39 +1,38 @@
 package com.rest.API.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "app_user")
-public class AppUser implements Serializable {
+public class AppUserModel implements Serializable {
     @Id
     @Column(name="username")
     private String username;
     //@NotBlank
     @Column(name="password")
     private String password;
-    @Column(name="salt")
-    private String salt;
+    @Enumerated(EnumType.STRING)
+    private AppUserRoleEnum role;
 
     @Override
     public String toString() {
         return "User{" +
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", salt='" + salt + '\'' +
+                ", role='" + role + '\'' +
                 '}';
     }
 
-    public AppUser(){}
+    public AppUserModel(){}
 
-    public AppUser(String username, /*@NotBlank*/ String password, String salt) {
+    public AppUserModel(String username, /*@NotBlank*/ String password, AppUserRoleEnum role) {
         this.username = username;
         this.password = password;
-        this.salt = salt;
+        this.role = role;
     }
 
-    public AppUser(String username, /*@NotBlank*/ String password) {
+    public AppUserModel(String username, /*@NotBlank*/ String password) {
         this.username = username;
         this.password = password;
     }
@@ -54,11 +53,11 @@ public class AppUser implements Serializable {
         this.password = password;
     }
 
-    public String getSalt() {
-        return salt;
+    public AppUserRoleEnum getRole() {
+        return role;
     }
 
-    public void setSalt(String salt) {
-        this.salt = salt;
+    public void setRole(AppUserRoleEnum role) {
+        this.role = role;
     }
 }

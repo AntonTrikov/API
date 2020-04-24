@@ -1,4 +1,4 @@
-package com.rest.API.model;
+package com.rest.API.security.model;
 
 import java.io.Serializable;
 

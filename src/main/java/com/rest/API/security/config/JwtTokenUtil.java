@@ -1,4 +1,4 @@
-package com.rest.API.config;
+package com.rest.API.security.config;
 
 import java.io.Serializable;
 import java.util.Date;
