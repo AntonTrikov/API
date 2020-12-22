@@ -3,7 +3,6 @@ package com.rest.API.model.response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-
 import java.util.*;
 
 public class DefaultErrorResponse extends ResponseEntity {
