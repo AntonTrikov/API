@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADMIN PAGE</title>
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+    <script src="https://use.fontawesome.com/721b2b8ef2.js"></script>
+</head>
+<body>
+    <h2>ADMIN PAGE</h2>
+    <div id="ingredient-container">
+        <h3 id="ingredient-container-header">
+            Ingredients</h3>
+        <table id="ingredient-table">
+            <tr>
+                <td id="ingredient-table-name-column">Name</td>
+                <td>Allergenic</td>
+                <td>Actions</td>
+            </tr>
+        </table>
+        <div id="new-ingredient-form-container">
+            <form id="new-ingredient-form">
+                <div id="ingredient-input-container">
+                    <input id="new-ingredient-name"
+                            type="text"
+                            placeholder="New ingredient name"><br>
+                    <label for="allergenic-1">Allergenic</label>
+                    <input type="checkbox"
+                            id="new-ingredient-allergenic"
+                            name="allergenic-1">
+                </div>
+                <button type="submit" id="add-ingredient-button">ADD</button>
+                
+            </form>
+        </div>
+        
+    </div>
+    
+</body>
+<script th:src="@{/assets/js/IngredientController.js}"></script>
+<script th:src="@{/assets/js/customRequest.js}"></script>
+<script th:src="@{/assets/js/admin.js}"></script>
+<script th:src="@{/assets/js/popup.js}"></script>
+</html>

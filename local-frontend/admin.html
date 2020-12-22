@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADMIN PAGE</title>
+    <link rel="stylesheet" href="style/style.css">
+</head>
+<body>
+    <h2>ADMIN PAGE</h2>
+    <div id="ingredient-container">
+        <h3 id="ingredient-container-header">Ingredients</h3>
+        <table id="ingredient-table">
+            <tr>
+                <td id="ingredient-table-name-column">Name</td>
+                <td>Allergenic</td>
+                <td>Actions</td>
+            </tr>
+            <tr>
+                <td>uno</td>
+                <td>due</td>
+                <td>tre</td>
+            </tr>
+        </table>
+        <form id="new-ingredient-form">
+            <div id="ingredient-input-container">
+                <input id="new-ingredient-name"
+                        type="text"
+                        placeholder="New ingredient name"><br>
+                <label for="allergenic-1">Allergenic</label>
+                <input type="checkbox"
+                        value="allergenic"
+                        name="allergenic-1">
+            </div>
+            <button type="submit">ADD</button>
+            
+        </form>
+    </div>
+    
+</body>
+<script src="js/admin.js"></script>
+</html>
