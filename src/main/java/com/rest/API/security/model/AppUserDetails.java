@@ -3,20 +3,26 @@ package com.rest.API.security.model;
 import com.rest.API.model.AppUserModel;
 import com.rest.API.model.AppUserRoleEnum;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class AppUserDetails extends User {
+    int id;
     String password;
     String username;
     AppUserRoleEnum role;
-    List<? extends GrantedAuthority> authorities;
+    List<GrantedAuthority> authorities;
 
     public AppUserDetails(AppUserModel appUserModel){
-        super(appUserModel.getUsername(), appUserModel.getPassword(), new ArrayList<>());
+        super(appUserModel.getUsername(),
+                appUserModel.getPassword(),
+                Arrays.asList(new SimpleGrantedAuthority(appUserModel.getRole().name())));
         this.role = appUserModel.getRole();
+        this.id = appUserModel.getId();
     }
 
     public AppUserRoleEnum getRole() {
@@ -25,5 +31,13 @@ public class AppUserDetails extends User {
 
     public void setRole(AppUserRoleEnum role) {
         this.role = role;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

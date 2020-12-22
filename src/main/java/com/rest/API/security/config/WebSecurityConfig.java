@@ -1,8 +1,10 @@
 package com.rest.API.security.config;
 
+import com.rest.API.model.AppUserRoleEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -13,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 @Configuration
 @EnableWebSecurity
@@ -40,17 +43,39 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler(){
+        return new CustomAccessDeniedHandler();
+    }
+
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
 // We don't need CSRF for this example
         httpSecurity.csrf().disable()
 // dont authenticate this particular request
-                .authorizeRequests().antMatchers(new String[]{"/authenticate", "/user/register"}).permitAll()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.GET,new String[]{"/ingredient/**"}).permitAll()
+                .antMatchers(new String[]{  "/authenticate",
+                                            "/user",
+                                            "/",
+                                            "/html/**",
+                                            "/swagger-ui.html",
+                                            "/swagger-resources/**",
+                                            "/v2/api-docs",
+                                            "/webjars/**"}).permitAll()
+                .antMatchers(HttpMethod.POST,new String[]{"/ingredient","/product-typology","/product"})
+                    .hasAuthority(AppUserRoleEnum.ADMIN.name())
+                .antMatchers(HttpMethod.PUT,new String[]{"/ingredient","/product-typology","/product"})
+                    .hasAuthority(AppUserRoleEnum.ADMIN.name())
+                .antMatchers(HttpMethod.DELETE,new String[]{"/ingredient","/product-typology","/product"})
+                    .hasAuthority(AppUserRoleEnum.ADMIN.name())
 // all other requests need to be authenticated
         .anyRequest().authenticated().and().
 // make sure we use stateless session; session won't be used to
 // store user's state.
-        exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
+        exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .and().exceptionHandling().accessDeniedHandler(accessDeniedHandler())
+                .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 // Add a filter to validate the tokens with every request
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

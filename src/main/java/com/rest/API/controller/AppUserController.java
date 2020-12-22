@@ -1,26 +1,17 @@
 package com.rest.API.controller;
 
 import com.rest.API.dto.model.AppUserDto;
+import com.rest.API.model.response.ApiResponseUtil;
 import com.rest.API.security.config.JwtTokenUtil;
 import com.rest.API.security.model.AppUserDetails;
-import com.rest.API.security.model.JwtRequest;
 import com.rest.API.security.model.JwtResponse;
-import com.rest.API.model.AppUserModel;
-import com.rest.API.repository.UserRepository;
-import com.rest.API.security.service.JwtUserDetailsService;
 import com.rest.API.service.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -31,15 +22,14 @@ public class AppUserController {
     @Autowired
     AppUserService appUserService;
 
-    @PostMapping("/user/register")
-    public ResponseEntity<?> register(@RequestBody AppUserDto userRequestDTO) throws Exception {
-        try{
-            AppUserDetails userDetails = appUserService.registerUser(userRequestDTO);
-            final String token = jwtTokenUtil.generateToken(userDetails);
-            return ResponseEntity.ok(new JwtResponse(token, userDetails.getRole()));
-        }catch (Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    @PostMapping("/user")
+    public ResponseEntity<?> register(@Valid @RequestBody AppUserDto userRequestDTO) {
+        AppUserDetails userDetails = appUserService.registerUser(userRequestDTO);
+        final String token = jwtTokenUtil.generateToken(userDetails);
+        return ResponseEntity.created(
+                ApiResponseUtil.createLocation(userDetails.getId(),
+                        ServletUriComponentsBuilder.fromCurrentRequest())
+        ).body(new JwtResponse(token, userDetails.getRole()));
     }
 
     /*@GetMapping("/user/{username}")

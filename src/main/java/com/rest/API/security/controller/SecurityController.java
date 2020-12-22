@@ -1,5 +1,6 @@
 package com.rest.API.security.controller;
 
+import com.rest.API.controller.admin.IngredientController;
 import com.rest.API.security.config.JwtTokenUtil;
 import com.rest.API.security.model.AppUserDetails;
 import com.rest.API.security.model.JwtRequest;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.logging.Logger;
+
 @RestController
 @CrossOrigin
 public class SecurityController {
@@ -26,6 +29,8 @@ public class SecurityController {
     private JwtTokenUtil jwtTokenUtil;
     @Autowired
     private JwtUserDetailsService userDetailsService;
+
+    public static final Logger LOGGER= Logger.getLogger(SecurityController.class.getName());
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> aunthenticate(@RequestBody JwtRequest authRequest) throws Exception {
@@ -39,15 +44,15 @@ public class SecurityController {
 
     private void authenticate(String username, String password) throws Exception {
         try {
-            System.out.println("authenticate: username and password " + username + " " + password);
+            LOGGER.info("authenticate: username and password " + username + " " + password);
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
-            System.out.println(token.toString());
+            LOGGER.info(token.toString());
             authenticationManager.authenticate(token);
         } catch (DisabledException e) {
-            System.out.println("user is disabled");
+            LOGGER.info("user is disabled");
             throw new Exception("USER_DISABLED", e);
         } catch (BadCredentialsException e) {
-            System.out.println("INVALID_CREDENTIALS");
+            LOGGER.info("INVALID_CREDENTIALS");
             throw new Exception("INVALID_CREDENTIALS", e);
         }
     }

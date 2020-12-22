@@ -6,7 +6,16 @@ import java.io.Serializable;
 @Entity
 @Table(name = "app_user")
 public class AppUserModel implements Serializable {
+    private static final String ENTITY_NAME ="user";
+    private static final String ID_NAME ="id";
+
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "app_user_id_generator")
+    @SequenceGenerator(name="app_user_id_generator", sequenceName = "app_user_sequence",
+            allocationSize = 1)
+    @Column(name="id")
+    private int id;
+
     @Column(name="username")
     private String username;
     //@NotBlank
@@ -15,27 +24,7 @@ public class AppUserModel implements Serializable {
     @Enumerated(EnumType.STRING)
     private AppUserRoleEnum role;
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", role='" + role + '\'' +
-                '}';
-    }
-
     public AppUserModel(){}
-
-    public AppUserModel(String username, /*@NotBlank*/ String password, AppUserRoleEnum role) {
-        this.username = username;
-        this.password = password;
-        this.role = role;
-    }
-
-    public AppUserModel(String username, /*@NotBlank*/ String password) {
-        this.username = username;
-        this.password = password;
-    }
 
     public String getUsername() {
         return username;
@@ -59,5 +48,31 @@ public class AppUserModel implements Serializable {
 
     public void setRole(AppUserRoleEnum role) {
         this.role = role;
+    }
+
+    public static String getEntityName() {
+        return ENTITY_NAME;
+    }
+
+    public static String getIdName() {
+        return ID_NAME;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "AppUserModel{" +
+                "id=" + id + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                '}';
     }
 }

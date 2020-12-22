@@ -1,6 +1,7 @@
 package com.rest.API.security.config;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +24,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
+    private static final Logger LOGGER= Logger.getLogger(JwtRequestFilter.class.getName());
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException, AuthenticationException {
@@ -36,21 +39,22 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             try {
                 username = jwtTokenUtil.getUsernameFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
-                System.out.println("Unable to get JWT Token");
+                LOGGER.info("Unable to get JWT Token");
             } catch (ExpiredJwtException e) {
-                System.out.println("JWT Token has expired");
+                LOGGER.info("JWT Token has expired");
             }
         } else {
             logger.warn("JWT Token does not begin with Bearer String");
         }
 // Once we get the token validate it.
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            System.out.println("in JwtRequestFilter: calling loadUserByUsername");
+            LOGGER.info("in JwtRequestFilter: calling loadUserByUsername");
             UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(username);
 // if token is valid configure Spring Security to manually set
 // authentication
             logger.info(("userDetails: " + userDetails.toString()));
             if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
+                LOGGER.info("in jwt request filter with userDetails: " + userDetails.toString());
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken

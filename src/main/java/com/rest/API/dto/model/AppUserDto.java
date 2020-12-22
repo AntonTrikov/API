@@ -1,27 +1,23 @@
 package com.rest.API.dto.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.rest.API.model.AppUserRoleEnum;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 
-import java.util.Set;
+import javax.validation.constraints.*;
 
 public class AppUserDto {
+    private int id;
+
+    @NotBlank(message = "user username field cannot be blank")
     private String username;
+
+    @NotBlank(message = "user password field cannot be blank")
     private String password;
-    private AppUserRoleEnum role;
+
+    @NotBlank(message = "user role field cannot be blank")
+    @ValidateEnum(targetClassType = AppUserRoleEnum.class, message = "Please select CLIENT or RESTAURANT_OWNER")
+    private String role;
 
     public AppUserDto(){}
-
-    public AppUserDto(String username, String password, AppUserRoleEnum role) {
-        this.username = username;
-        this.password = password;
-    }
 
     public String getUsername() {
         return username;
@@ -39,12 +35,29 @@ public class AppUserDto {
         this.password = password;
     }
 
-    public AppUserRoleEnum getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(AppUserRoleEnum role) {
+    public void setRole(String role) {
         this.role = role;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "AppUserDto{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                '}';
+    }
 }
