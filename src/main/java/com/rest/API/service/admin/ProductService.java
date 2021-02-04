@@ -1,7 +1,6 @@
 package com.rest.API.service.admin;
 
 import com.rest.API.dto.model.ProductDto;
-import com.rest.API.dto.model.ProductTypologyDto;
 import com.rest.API.exception.AlreadyExistsException;
 import com.rest.API.exception.NotFoundRequestedEntityException;
 import com.rest.API.model.ProductModel;
@@ -12,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -26,20 +26,27 @@ public class ProductService {
             productModel = new ProductModel();
             productModel.setName(productDto.getName());
             productModel.setPhoto(productDto.getPhoto()==null? null : productDto.getPhoto());
-            productModel.setPrice(productDto.getPrice());
+            productModel.setPrice(productDto.getPriceEur());
+            int id = Integer.parseInt(productDto.getTypology().getId());
             Optional<ProductTypologyModel> productTypologyModelOptional =
-                    productTypologyRepository.findById(productDto.getTypologyId());
+                    productTypologyRepository.findById(id);
             if(productTypologyModelOptional.isPresent()){
                 productModel.setProductTypology(productTypologyModelOptional.get());
             }else{
                 throw new NotFoundRequestedEntityException(ProductTypologyModel.ENTITY_NAME,
                         "id",
-                        productDto.getTypologyId());
+                        productDto.getTypology().getId());
             }
             return productRepository.save(productModel);
         }
         throw new AlreadyExistsException(ProductModel.ENTITY_NAME,
                 ProductModel.ID_NAME,
                 productDto.getName());
+    }
+
+    public Object getAllProducts() {
+        return productRepository.findAll().stream()
+                .map(model -> new ProductDto(model))
+                .collect(Collectors.toList());
     }
 }

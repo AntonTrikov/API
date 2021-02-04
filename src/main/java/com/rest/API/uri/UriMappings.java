@@ -6,7 +6,7 @@ public final class UriMappings {
     public static final String PRODUCT_URI = "/product";
     public static final String PROMO_URI = "/promo";
 
-    public static final String CLIENT_URI = "/client";
+    public static final String USER_URI = "/client";
     public static final String RESTAURANT_OWNER_URI = "/restaurantOwner";
     public static final String CLIENT_PAYMENY_METHOD_URI = "/clientPaymentMethod";
     public static final String CLIENT_ORDER_URI = "/clientOrder";
@@ -16,35 +16,35 @@ public final class UriMappings {
         return INGREDIENT_URI +"/"+ id;
     }
 
-    public static String getProductTypologyUri(String id) {
+    public static String getProductTypologyUri(int id) {
         return PRODUCT_TYPOLOGY_URI +"/"+ id;
     }
 
-    public static String getProductUri(String id) {
+    public static String getProductUri(int id) {
         return PRODUCT_URI +"/"+ id;
     }
 
-    public static String getPromoUri(String id) {
+    public static String getPromoUri(int id) {
         return PROMO_URI +"/"+ id;
     }
 
-    public static String getClientUri(String id) {
-        return CLIENT_URI +"/"+ id;
+    public static String getUserUri(String id) {
+        return USER_URI +"/"+ id;
     }
 
-    public static String getRestaurantOwnerUri(String id) {
+    public static String getRestaurantOwnerUri(int id) {
         return RESTAURANT_OWNER_URI +"/"+ id;
     }
 
-    public static String getClientPaymenyMethodUri(String id) {
+    public static String getClientPaymenyMethodUri(int id) {
         return CLIENT_PAYMENY_METHOD_URI +"/"+ id;
     }
 
-    public static String getClientOrderUri(String id) {
+    public static String getClientOrderUri(int id) {
         return CLIENT_ORDER_URI +"/"+ id;
     }
 
-    public static String getRestaurantOwnerProductUri(String id) {
+    public static String getRestaurantOwnerProductUri(int id) {
         return RESTAURANT_OWNER_PRODUCT_URI +"/"+ id;
     }
 }

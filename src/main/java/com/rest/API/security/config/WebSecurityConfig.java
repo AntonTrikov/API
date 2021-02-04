@@ -54,20 +54,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.csrf().disable()
 // dont authenticate this particular request
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET,new String[]{"/ingredient/**"}).permitAll()
+                .antMatchers(HttpMethod.GET,new String[]{"/ingredient/**","/user"}).permitAll()
                 .antMatchers(new String[]{  "/authenticate",
-                                            "/user",
                                             "/",
                                             "/html/**",
                                             "/swagger-ui.html",
                                             "/swagger-resources/**",
                                             "/v2/api-docs",
                                             "/webjars/**"}).permitAll()
-                .antMatchers(HttpMethod.POST,new String[]{"/ingredient","/product-typology","/product"})
+                .antMatchers(HttpMethod.POST,new String[]{"/ingredient","/user","/product-typology","/product"})
                     .hasAuthority(AppUserRoleEnum.ADMIN.name())
-                .antMatchers(HttpMethod.PUT,new String[]{"/ingredient","/product-typology","/product"})
+                .antMatchers(HttpMethod.PUT,new String[]{"/ingredient","/user","/product-typology","/product"})
                     .hasAuthority(AppUserRoleEnum.ADMIN.name())
-                .antMatchers(HttpMethod.DELETE,new String[]{"/ingredient","/product-typology","/product"})
+                .antMatchers(HttpMethod.DELETE,new String[]{"/ingredient","/user","/product-typology","/product"})
                     .hasAuthority(AppUserRoleEnum.ADMIN.name())
 // all other requests need to be authenticated
         .anyRequest().authenticated().and().

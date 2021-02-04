@@ -29,6 +29,13 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
                                         ex.getMessage());
     }
 
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<Object> unauthorizedAccessHandler(Exception ex,
+                                                            HttpServletResponse response) {
+        return new DefaultErrorResponse(HttpStatus.UNAUTHORIZED,
+                ex.getMessage());
+    }
+
     @ExceptionHandler(NotFoundRequestedEntityException.class)
     public ResponseEntity<Object> notFoundHandler(Exception ex,
                                                                   HttpServletResponse response) throws IOException {

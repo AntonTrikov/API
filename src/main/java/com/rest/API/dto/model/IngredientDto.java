@@ -4,28 +4,26 @@ import com.rest.API.dto.model.validation.IdValidation;
 import com.rest.API.model.IngredientModel;
 import com.rest.API.uri.UriMappings;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiParam;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
 
 @ApiModel
 public class IngredientDto implements Serializable {
-    @Min(   value = 1,
-            message = "product id cannot be negative or blank",
-            groups = IdValidation.class)
-    String id;
+    @Min(value = 1,message = "product id cannot be negative or blank",groups = IdValidation.class)
+    int id;
 
     @NotBlank(message = "ingredient name field cannot be blank")
     String name;
 
-    //@JsonProperty(value = "isAllergenic")
     @NotNull(message="ingredient isAllergenic field cannot be blank")
     Boolean allergenic;
 
     public IngredientDto(){}
 
     public IngredientDto(IngredientModel model){
-        this.id = UriMappings.getIngredientUri(model.getId());
+        this.id = model.getId();
         this.name = model.getName();
         this.allergenic = model.isAllergenic();
     }
@@ -46,11 +44,11 @@ public class IngredientDto implements Serializable {
         this.allergenic = allergenic;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

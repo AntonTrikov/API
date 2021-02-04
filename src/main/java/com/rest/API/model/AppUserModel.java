@@ -7,15 +7,9 @@ import java.io.Serializable;
 @Table(name = "app_user")
 public class AppUserModel implements Serializable {
     private static final String ENTITY_NAME ="user";
-    private static final String ID_NAME ="id";
+    private static final String ID_NAME ="username";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "app_user_id_generator")
-    @SequenceGenerator(name="app_user_id_generator", sequenceName = "app_user_sequence",
-            allocationSize = 1)
-    @Column(name="id")
-    private int id;
-
     @Column(name="username")
     private String username;
     //@NotBlank
@@ -58,19 +52,10 @@ public class AppUserModel implements Serializable {
         return ID_NAME;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     @Override
     public String toString() {
         return "AppUserModel{" +
-                "id=" + id + '\'' +
-                ", username='" + username + '\'' +
+                " username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", role=" + role +
                 '}';

@@ -1,16 +1,21 @@
 package com.rest.API.dto.model;
 
+import com.rest.API.dto.model.id.IngredientIdDto;
+import com.rest.API.dto.model.id.ProductTypologyIdDto;
 import com.rest.API.dto.model.validation.IdValidation;
 
-import javax.validation.Valid;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+
+import com.rest.API.uri.UriMappings;
+
+import com.rest.API.model.ProductModel;
 import org.springframework.validation.annotation.Validated;
 
 public class ProductDto implements Serializable {
@@ -22,17 +27,30 @@ public class ProductDto implements Serializable {
     String name;
 
     @DecimalMin(value = "0.0", inclusive = false)
-    BigDecimal price;
+    BigDecimal priceEur;
 
     String photo;
 
-    @Min(value = 0, message = "product typologyId cannot be negative or blank")
-    int typologyId;
+    ProductTypologyIdDto typology;
 
     @NotNull(message = "product productIngredientList cannot be null")
-    List <IngredientDto> productIngredientList;
+    List <IngredientIdDto> ingredients;
+
+    public ProductDto(ProductModel model){
+        this.id  =model.getId();
+        this.name = model.getName();
+        this.priceEur =model.getPrice();
+        this.photo = model.getPhoto();
+        this.typology = new ProductTypologyIdDto(model.getProductTypology().getId());
+        ingredients = new ArrayList<>();
+        model.getIngredientSet().stream()
+                .forEach(ingredientModel -> ingredients.add(new IngredientIdDto(ingredientModel.getId())));
+
+    }
 
     public ProductDto(){}
+
+
 
     public int getId() {
         return id;
@@ -50,12 +68,12 @@ public class ProductDto implements Serializable {
         this.name = name;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public BigDecimal getPriceEur() {
+        return priceEur;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setPriceEur(BigDecimal priceEur) {
+        this.priceEur = priceEur;
     }
 
     public String getPhoto() {
@@ -66,19 +84,19 @@ public class ProductDto implements Serializable {
         this.photo = photo;
     }
 
-    public int getTypologyId() {
-        return typologyId;
+    public ProductTypologyIdDto getTypology() {
+        return typology;
     }
 
-    public void setTypologyId(int typologyId) {
-        this.typologyId = typologyId;
+    public void setTypology(ProductTypologyIdDto typology) {
+        this.typology = typology;
     }
 
-    public List<IngredientDto> getProductIngredientList() {
-        return productIngredientList;
+    public List<IngredientIdDto> getIngredients() {
+        return ingredients;
     }
 
-    public void setProductIngredientList(@Validated(IdValidation.class) List<IngredientDto> productIngredientList) {
-        this.productIngredientList = productIngredientList;
+    public void setIngredients(@Validated(IdValidation.class) List<IngredientIdDto> ingredients) {
+        this.ingredients = ingredients;
     }
 }

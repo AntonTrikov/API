@@ -6,6 +6,7 @@ import com.rest.API.model.response.ApiResponseUtil;
 import com.rest.API.security.service.JwtUserDetailsService;
 import com.rest.API.service.admin.IngredientService;
 import com.rest.API.uri.UriMappings;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,35 +25,39 @@ public class IngredientController {
 
     @Autowired
     IngredientService ingredientService;
-    @CrossOrigin
+
+    @ApiOperation(value="ADD new single ingredient")
     @PostMapping("/ingredient")
     public ResponseEntity<?> addIngredient(@Valid @RequestBody IngredientDto ingredientDto) {
         IngredientModel ingredientModel = ingredientService.addIngredient(ingredientDto);
-        LOGGER.info("ingredientModel " + ingredientModel.toString());
         String uri = UriMappings.getIngredientUri(ingredientModel.getId());
         return ResponseEntity.status(HttpStatus.CREATED).header(HttpHeaders.LOCATION, uri).build();
     }
-    @CrossOrigin
+
+    @ApiOperation(value="DELETE single ingredient")
     @DeleteMapping("/ingredient/{ingredientId}")
     public ResponseEntity<?> removeIngredient(@PathVariable @NotNull int ingredientId) {
         ingredientService.deleteIngredient(ingredientId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-    @CrossOrigin
+
+    @ApiOperation(value="UPDATE single ingredient")
     @PutMapping("/ingredient/{ingredientId}")
-    public ResponseEntity<?> updateIngredient(@Valid @RequestBody IngredientDto ingredientDto,
-                                              @PathVariable @NotNull String ingredientId) {
+    public ResponseEntity<?> updateIngredient(@RequestBody IngredientDto ingredientDto,
+                                              @PathVariable @NotNull int ingredientId) {
         ingredientDto.setId(ingredientId);
         ingredientService.putIngredient(ingredientDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-    @CrossOrigin
+
+    @ApiOperation(value="GET single ingredients")
     @GetMapping("/ingredient/{ingredientId}")
     public ResponseEntity<?> getIngredientById(@PathVariable @NotNull int ingredientId) {
         IngredientDto dto = ingredientService.getIngredient(ingredientId);
         return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
-    @CrossOrigin
+
+    @ApiOperation(value="GET all ingredients")
     @GetMapping("/ingredient")
     public ResponseEntity<?> getAllIngredients() {
         return ResponseEntity.status(HttpStatus.OK).body(ingredientService.getAllIngredients());

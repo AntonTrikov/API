@@ -43,9 +43,25 @@ public class SwaggerConfig {
         private List<SecurityContext> securityContexts() {
                 List<SecurityContext> securityContexts = new ArrayList<>();
                 List<HttpMethod> postPutDeleteMethods = Arrays.asList(HttpMethod.PUT,HttpMethod.DELETE,HttpMethod.POST);
+                List<HttpMethod> postPutDeleteGetMethods = Arrays.asList(HttpMethod.PUT,HttpMethod.DELETE,HttpMethod.POST,HttpMethod.GET);
                 securityContexts.add( SecurityContext.builder().securityReferences(defaultAuth())
                         .forPaths(PathSelectors.regex("/ingredient.*"))
                         .forHttpMethods(Predicates.in(postPutDeleteMethods))
+                        .build()
+                );
+                securityContexts.add( SecurityContext.builder().securityReferences(defaultAuth())
+                        .forPaths(PathSelectors.regex("/admin.*"))
+                        .forHttpMethods(Predicates.in(postPutDeleteGetMethods))
+                        .build()
+                );
+                securityContexts.add( SecurityContext.builder().securityReferences(defaultAuth())
+                        .forPaths(PathSelectors.regex("/product.*"))
+                        .forHttpMethods(Predicates.in(postPutDeleteGetMethods))
+                        .build()
+                );
+                securityContexts.add( SecurityContext.builder().securityReferences(defaultAuth())
+                        .forPaths(PathSelectors.regex("/user.*"))
+                        .forHttpMethods(Predicates.in(postPutDeleteGetMethods))
                         .build()
                 );
                 return securityContexts;

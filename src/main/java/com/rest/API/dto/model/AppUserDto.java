@@ -1,12 +1,14 @@
 package com.rest.API.dto.model;
 
+import com.rest.API.model.AppUserModel;
 import com.rest.API.model.AppUserRoleEnum;
+import com.rest.API.model.IngredientModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.*;
 
 public class AppUserDto {
-    private int id;
-
     @NotBlank(message = "user username field cannot be blank")
     private String username;
 
@@ -18,6 +20,12 @@ public class AppUserDto {
     private String role;
 
     public AppUserDto(){}
+
+    public AppUserDto(AppUserModel model){
+        this.username = model.getUsername();
+        this.password = model.getPassword();
+        this.role = model.getRole().name();
+    }
 
     public String getUsername() {
         return username;
@@ -43,18 +51,9 @@ public class AppUserDto {
         this.role = role;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     @Override
     public String toString() {
         return "AppUserDto{" +
-                "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", role=" + role +

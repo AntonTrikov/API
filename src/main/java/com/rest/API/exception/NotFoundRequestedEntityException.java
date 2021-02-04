@@ -8,4 +8,10 @@ public class NotFoundRequestedEntityException extends RuntimeException {
                 entityName + " with  "
                 + entityId + " " + idValue + " does not exists");
     }
+
+    public <T> NotFoundRequestedEntityException(String entityName,String entityId, String idValue){
+        super(NotFoundRequestedEntityException.class.getSimpleName() +": "+
+                entityName + " with  "
+                + entityId + " " + idValue + " does not exists");
+    }
 }

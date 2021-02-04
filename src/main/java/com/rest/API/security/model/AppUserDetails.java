@@ -11,7 +11,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class AppUserDetails extends User {
-    int id;
     String password;
     String username;
     AppUserRoleEnum role;
@@ -22,7 +21,6 @@ public class AppUserDetails extends User {
                 appUserModel.getPassword(),
                 Arrays.asList(new SimpleGrantedAuthority(appUserModel.getRole().name())));
         this.role = appUserModel.getRole();
-        this.id = appUserModel.getId();
     }
 
     public AppUserRoleEnum getRole() {
@@ -31,13 +29,5 @@ public class AppUserDetails extends User {
 
     public void setRole(AppUserRoleEnum role) {
         this.role = role;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 }
